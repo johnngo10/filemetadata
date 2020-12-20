@@ -13,8 +13,17 @@ app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-app.post('/api/fileanalyse', function (req, res) {
-  const file = req.files.upfile;
+// handle file upload
+app.post('/api/fileanalyse', upload.single('upfile'), function (req, res) {
+  const file = req.file;
+  const { originalname, mimetype, size } = file;
+
+  // Return json object of file metadata
+  res.json({
+    name: originalname,
+    type: mimetype,
+    size: size,
+  });
 
   console.log(file);
 });
